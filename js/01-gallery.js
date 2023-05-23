@@ -29,6 +29,10 @@ galleryEl.append(...galleryMarkup);
 galleryEl.addEventListener('click', (event) => {
     event.preventDefault();
 
+     if (event.target.nodeName !== 'IMG') {
+    return;
+  }
+
     const largeImageURL = event.target.dataset.source;
 
     const instance = basicLightbox.create(`
@@ -37,12 +41,14 @@ galleryEl.addEventListener('click', (event) => {
 
     instance.show()
     
-    galleryEl.addEventListener('keydown', event => {
+const keyPress = (event) => {
     if (event.code === 'Escape') {
         instance.close();
+        document.removeEventListener('keydown', keyPress);
     }
-})
+  };
+
+    document.addEventListener('keydown', keyPress);
 })
 
 
-console.log(galleryItems);
